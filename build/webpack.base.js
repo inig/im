@@ -56,6 +56,13 @@ module.exports = {
       {
         test: /\.svg$/,
         loader: 'raw-loader'
+      },
+      {
+        test: /\.css$/,
+        loader: 'style-loader!css-loader!postcss-loader',
+        query: {
+          name: 'static/css/[name].[hash:8].[ext]'
+        }
       }
     ]
   },

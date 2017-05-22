@@ -20,5 +20,5 @@ module.exports = {
     }),
     require('postcss-nested')
   ],
-  electron: true,
+  electron: false,
 }

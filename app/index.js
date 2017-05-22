@@ -21,10 +21,10 @@ if (isDev) {
 
 function createWindow() {
   // Create the browser window.
-  mainWindow = new BrowserWindow({width: 800, height: 600})
+  mainWindow = new BrowserWindow({width: 1000, height: 792})
 
   // and load the index.html of the app.
-  const url = isDev ? `http://localhost:${config.port}` : `file://${__dirname}/dist/index.html`
+  const url = isDev ? `http://test.zhaopin.com:${config.port}` : `file://${__dirname}/dist/index.html`
   mainWindow.loadURL(url)
 
   // Open the DevTools.
