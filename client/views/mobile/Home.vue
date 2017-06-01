@@ -1,12 +1,14 @@
 <template>
-  <div>
-    <h1>这是移动端页面</h1>
-  </div>
+  <router-view></router-view>
 </template>
 
-<style scoped>
+<style>
   h1 {
     color: #ee3333;
+  }
+  * {
+    margin: 0;
+    padding: 0;
   }
 </style>
 <script>

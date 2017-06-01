@@ -49,6 +49,7 @@ const state = {
   maxInput: 200, // 消息最大长度
   chatScroll: null, // 聊天界面
   newMessageCount: 0,  // 当前会话有多少新消息
+  // platform: 1    // 设备平台
   platform: getPlatformType()    // 设备平台
 }
 
@@ -66,7 +67,7 @@ export default new Vuex.Store({
 
 if (state.platform === 1 || state.platform === 2) {
   // 移动端
-  router.replace('/m')
+  router.replace('/m/session')
 }
 
 window.STORE = this
