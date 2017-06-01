@@ -97,6 +97,11 @@ export const mutations = {
       state.sessions.splice(0, 0, data)
     }
     if (!state.sessionMembers.hasOwnProperty(data.id)) {
+      /***
+       * TODO: 调用接口，获取userInfo
+       * @type {Array}
+       * @private
+       */
       let _userInfo = []
       let tempMember
       for (let i = 0; i < data.discussionMemberList.length; i++) {
@@ -106,7 +111,7 @@ export const mutations = {
         }
       }
       state.sessionMembers[data.id] = _userInfo
-      store.vms.sessionList.$forceUpdate()
+      store.vms.sessionList && store.vms.sessionList.$forceUpdate()
     }
   },
   [types.ADD_SESSION] (state, data) {
@@ -125,7 +130,7 @@ export const mutations = {
     let _index = isIn(state.sessions, 'conversationid', data.id)
     if (_index !== -1) {
       state.sessions.splice(_index, 1)
-      store.vms.sessionList.$forceUpdate()
+      store.vms.sessionList && store.vms.sessionList.$forceUpdate()
     }
   },
   [types.SET_CURRENT_SESSION_INFO] (state, data) {
@@ -195,8 +200,12 @@ export const mutations = {
       // store.vms.chat.$forceUpdate()
     }
   },
-  [types.DO_SCROLL] () {
-    store.vms.chatView.$refs.chatView.scrollTop = 9999999
+  [types.DO_SCROLL] (state) {
+    // store.vms.chatView.$refs.chatView.scrollTop = 9999999
+    console.log(' DO SCROLL ', !!state.chatScroll)
+    if (!!state.chatScroll) {
+      state.chatScroll.scrollTo(0, state.chatScroll.maxScrollY, 1000)
+    }
   },
   [types.SEND_MESSAGE] (state, data) {
     console.log('发送消息——————————————', store.vms.chatEdit, '-=======', data)
@@ -222,7 +231,7 @@ export const mutations = {
       state.sessions[_index].sendtime = data.createTime
       state.sessions[_index].message = _msg
       Object.assign(state.sessions[_index], data)
-      store.vms.sessionList.$forceUpdate()
+      store.vms.sessionList && store.vms.sessionList.$forceUpdate()
     }
   },
   [types.UPDATE_MESSAGE] (state, data) {
@@ -233,10 +242,26 @@ export const mutations = {
       if (String(_tempMessage.messageId) === String(data.messageId)) {
         if (_tempMessage.readers.indexOf(Number(data.userId)) < 0 || _tempMessage.readers.indexOf(String(data.userId)) < 0) {
           _tempMessage.readers.push(Number(data.userId))
-          store.vms.chatView.$forceUpdate()
+          store.vms.chatView && store.vms.chatView.$forceUpdate()
         }
         i = -1
       }
+    }
+  },
+  [types.SET_CHAT_SCROLL] (state, data) {
+    console.log('++++++', (!data || !data.target))
+    if (!data || !data.target) {
+      state.chatScroll && state.chatScroll.refresh()
+    } else {
+      state.chatScroll = data.target
+    }
+    data && data.callback && data.callback()
+  },
+  [types.SET_NEW_MESSAGE_COUNT] (state, data) {
+    if (!data || !data.count) {
+      state.newMessageCount = 0
+    } else {
+      state.newMessageCount = Number(data.count)
     }
   }
 }

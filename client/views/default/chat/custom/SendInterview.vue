@@ -66,7 +66,7 @@
         </div>
         <div class="bd-line">
           <div class="form-intro">
-            <span class="intro-important">*</span>备注
+            备注
           </div>
           <div class="form-cont">
             <div class="cont-line">

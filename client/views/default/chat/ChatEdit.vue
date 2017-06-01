@@ -83,6 +83,7 @@
         this.send()
       },
       send (target, opts) {
+        const that = this
         /***
          * 发送消息
          */
@@ -151,6 +152,13 @@
           })
           this.text = ''
         }
+        setTimeout(function () {
+          that.$store.commit(types.SET_CHAT_SCROLL, {
+            callback: function () {
+              that.$store.commit(types.DO_SCROLL)
+            }
+          })
+        }, 100)
       },
       limitInput () {
         /***

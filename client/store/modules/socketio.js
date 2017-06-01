@@ -191,7 +191,15 @@ function socketInit (state) {
         store.commit(types.RECEIVED_NEW_MESSAGE, responseBody)
         if (String(responseBody.to) === String(store.state.currentsession)) {
           setTimeout(function () {
-            store.commit(types.DO_SCROLL)
+            if (store.state.chatScroll.y <= store.state.chatScroll.maxScrollY + 20) {
+              store.commit(types.SET_CHAT_SCROLL)
+              store.commit(types.DO_SCROLL)
+            } else {
+              store.commit(types.SET_NEW_MESSAGE_COUNT, {
+                count: store.state.newMessageCount + 1
+              })
+              store.commit(types.SET_CHAT_SCROLL)
+            }
           }, 10)
         }
         break
@@ -241,19 +249,19 @@ function socketInit (state) {
 
 const actions = {
   socket_connect: (context) => {
-    jsonp({
-      url: 'Im/GetToken?uticket=' + cookie.get('rt'),
-      success: function (res) {
-        console.log('@@@@@@@@@@@@@@', res)
-        store.state.account = res.data.accid
-        store.state.token = cookie.get('at')
-
-        let socket = io.connect(socketServer + '?device_id=' + store.state.account + '&token=' + store.state.token + '&device_type=' + deviceType)
-        context.commit(types.SOCKET_CONNECT, {
-          socket: socket
-        })
-      }
-    })
+    // jsonp({
+    //   url: 'Im/GetToken?uticket=' + cookie.get('rt'),
+    //   success: function (res) {
+    //     console.log('@@@@@@@@@@@@@@', res)
+    //     store.state.account = res.data.accid
+    //     store.state.token = cookie.get('at')
+    //
+    //     let socket = io.connect(socketServer + '?device_id=' + store.state.account + '&token=' + store.state.token + '&device_type=' + deviceType)
+    //     context.commit(types.SOCKET_CONNECT, {
+    //       socket: socket
+    //     })
+    //   }
+    // })
 
     // store.state.account = '660527147'
     // store.state.token = '45855943db284dceb5aa38e31d35f8ba'
@@ -262,9 +270,14 @@ const actions = {
     //   socket: socket
     // })
 
-    // store.state.account = '689607786'
-    // store.state.token = '416a5a9b2b6942fca159700289dc5fb1'
-    // let socket = io.connect(socketServer + '?device_id=' + store.state.account + '&token=' + store.state.token + '&device_type=' + deviceType)
+    store.state.account = '689607786'
+    store.state.token = '416a5a9b2b6942fca159700289dc5fb1'
+    let socket = io.connect(socketServer + '?device_id=' + store.state.account + '&token=' + store.state.token + '&device_type=' + deviceType)
+    context.commit(types.SOCKET_CONNECT, {
+      socket: socket
+    })
+
+    // let socket = new WebSocket('ws://192.168.212.216:8888/socket.io')
     // context.commit(types.SOCKET_CONNECT, {
     //   socket: socket
     // })

@@ -18,12 +18,30 @@
         </p>
       </div>
     </div>
-    <div class="info-setting im-icon icon-setting1"></div>
+    <div class="info-setting im-icon icon-setting1" @click="toggleSettings"></div>
+    <transition name="setting-transition" enter-active-class="animated fadeIn" leave-active-class="animated fadeOut">
+      <div v-if="settingContainerShown">
+        <div class="setting-container-mask" @click="hideSettings">
+        </div>
+        <div class="setting-container">
+          <div class="bubble-up"></div>
+          <div class="item">聊天置顶</div>
+          <div class="item">消息免打扰</div>
+          <div class="item">拒绝（不合适）</div>
+          <!--<div class="item">设置打招呼语</div>-->
+        </div>
+      </div>
+    </transition>
   </div>
 </template>
 
 <script>
 export default {
+  data () {
+    return {
+      settingContainerShown: false
+    }
+  },
   computed: {
     session () {
       return this.$store.state.jobInfo
@@ -35,6 +53,17 @@ export default {
       return this.$store.state.currentsession
     }
   },
+  methods: {
+    showSettings () {
+      this.settingContainerShown = true
+    },
+    hideSettings () {
+      this.settingContainerShown = false
+    },
+    toggleSettings () {
+      this.settingContainerShown = !this.settingContainerShown
+    }
+  },
   components: {
   }
 }
@@ -42,9 +71,9 @@ export default {
 
 <style lang="scss">
   .chat-header {
+    position: relative;
     padding: 16px 20px;
     color: #333;
-    position: relative;
     background-color: #edf1f8;
     z-index: 9;
     zoom: 1;
@@ -110,6 +139,53 @@ export default {
         &:hover {
           background-position: -50px -150px;
         }
+      }
+    }
+    .setting-container-mask {
+      position: fixed;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: transparent;
+    }
+    .setting-container {
+      position: absolute;
+      right: 10px;
+      top: 45px;
+      width: 110px;
+      /*height: 300px;*/
+      background-color: #ffffff;
+      border: 1px solid #eee;
+      border-radius: 4px;
+      -webkit-box-shadow: 0 0 10px 2px #eee;
+      -moz-box-shadow: 0 0 10px 2px #eee;
+      box-shadow: 0 0 10px 2px #eee;
+      .item {
+        /*width: 100%;*/
+        height: 30px;
+        line-height: 30px;
+        padding: 0 0 0 9px;
+        font-size: 14px;
+        color: #999;
+        border-bottom: 1px solid #d1dfe6;
+        cursor: pointer;
+        &:last-child {
+          border: none;
+        }
+        &:hover {
+          background-color: #edf1f8;
+        }
+      }
+      .bubble-up {
+        position: absolute;
+        width: 0;
+        height: 0;
+        top: -6px;
+        right: 17px;
+        border-left: 5px solid transparent;
+        border-right: 5px solid transparent;
+        border-bottom: 6px solid #fff;
       }
     }
   }
