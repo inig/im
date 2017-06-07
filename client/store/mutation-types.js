@@ -96,3 +96,9 @@ export const SOCKET_RESPONSE = 'SOCKET_RESPONSE'
 export const SOCKET_GET_CONVERSATION_LIST = 'SOCKET_GET_CONVERSATION_LIST'
 
 export const SET_NEW_MESSAGE_COUNT = 'SET_NEW_MESSAGE_COUNT'
+
+// UTIL COMS
+// 新增一个全局tip
+export const INSERT_TOAST = 'INSERT_TOAST'
+// 删除一个全局tip
+export const DEL_TOAST = 'DEL_TOAST'

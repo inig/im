@@ -49,6 +49,7 @@ const state = {
   maxInput: 200, // 消息最大长度
   chatScroll: null, // 聊天界面
   newMessageCount: 0,  // 当前会话有多少新消息
+  globalTips: {},
   // platform: 1    // 设备平台
   platform: getPlatformType()    // 设备平台
 }

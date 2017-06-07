@@ -48,6 +48,31 @@ function isIn (arr, arrKey, targetValue) {
 }
 
 export const mutations = {
+  [types.INSERT_TOAST] (state, data) {
+    const _uid = utils.getUUID('global_tip_' + (+new Date()))
+    if (!state.globalTips.hasOwnProperty(_uid)) {
+      state.globalTips[_uid] = Object.assign({}, {
+        type: 'success',
+        message: '这是提示内容',
+        cancel: true,
+        duration: 3000,
+        animationIn: 'fadeIn',
+        animationOut: 'fadeOut'
+      }, data)
+      store.vms.app.$forceUpdate()
+      const hideTimeout = setTimeout(function () {
+        store.vms[_uid].shown = false
+        delete state.globalTips[_uid]
+        clearTimeout(hideTimeout)
+      }, data.duration || 3000)
+    }
+  },
+  [types.DEL_TOAST] (state, data) {
+    if (state.globalTips.hasOwnProperty(data.id)) {
+      store.vms[data.id].shown = false
+      delete state.globalTips[data.id]
+    }
+  },
   [types.UPDATE_SESSION] (state) {
     store.vms.sessionList.$forceUpdate()
     for (let i = 0; i < store.vms.sessionList.$children.length; i++) {

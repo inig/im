@@ -6,10 +6,14 @@
         <img src="../../static/loading.gif" alt="加载中">
       </div>
     </transition>
+    <div id="global-tip-container">
+      <com-toast v-for="(value, item) in globalTips" :key="item" :data-id="item" :data-opts="globalTips[item]"></com-toast>
+    </div>
   </div>
 </template>
 
 <script>
+  import ComToast from './ComToast/ComToast.vue'
   require('../util/directives')
   const types = require('../store/mutation-types')
   export default {
@@ -26,6 +30,9 @@
 //      this.$store.commit(types.SOCKET_GET_CONVERSATION_LIST, {
 //        conversationType: 1
 //      })
+    },
+    components: {
+      ComToast
     }
   }
 </script>
@@ -656,4 +663,57 @@ body {
     /*background: #C1C1C1;*/
     /*border-radius: 2px;*/
   /*}*/
+
+  #global-tip-container {
+    position: fixed;
+    width: 300px;
+    /*min-height: 300px;*/
+    right: 10px;
+    top: 48px;
+    z-index: 99999;
+    /*overflow-y: hidden;*/
+    background-color: transparent;
+    .item {
+      width: 100%;
+      /*height: 48px;*/
+      line-height: 2;
+      margin-top: 10px;
+      padding: 10px;
+      border-radius: 5px;
+      -moz-user-select: none;
+      -webkit-user-select: none;
+      -ms-user-select: none;
+      -khtml-user-select: none;
+      user-select: none;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      i {
+        width: 20px;
+        height: 20px;
+        font-size: 20px;
+        cursor: pointer;
+      }
+      &.success {
+        color: #ffffff;
+        background-color: #5cb85c;
+        border: 1px solid #4cae4c;
+      }
+      &.info {
+        color: #ffffff;
+        background-color: #5bc0de;
+        border: 1px solid #46b8da;
+      }
+      &.warning {
+        color: #ffffff;
+        background-color: #f0ad4e;
+        border: 1px solid #eea236;
+      }
+      &.danger, &.error {
+        color: #ffffff;
+        background-color: #d9534f;
+        border: 1px solid #d43f3a;
+      }
+    }
+  }
 </style>
